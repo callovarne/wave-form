@@ -25,17 +25,17 @@ app.get('/', (req, res) => {
         </div>
         <form class="">
           <div class="ui massive right labeled inverted transparent input">
-            <input type="text" placeholder="200" name="frequency" autocomplete="off" autofocus>
+            <input type="text" placeholder="600" name="frequency" autocomplete="off" autofocus>
             <div class="ui black inverted label">Hz</div>
           </div>
         </form>
         <div class="ui text container">
           <code class="ui inverted grey segment">
-            &lt;audio src="https://wt-patrick-craftycorvid_com-0.run.webtask.io/wave-form/200"&gt;&lt;/audio&gt;
+            &lt;audio src="https://wt-patrick-craftycorvid_com-0.run.webtask.io/wave-form/600"&gt;&lt;/audio&gt;
           </code>
         </div>
         <audio controls>
-          <source src="https://wt-patrick-craftycorvid_com-0.run.webtask.io/wave-form/200" type="audio/wav">
+          <source src="https://wt-patrick-craftycorvid_com-0.run.webtask.io/wave-form/600" type="audio/wav">
         </audio>
       </div>
       <div class="ui grid container">
