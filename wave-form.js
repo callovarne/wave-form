@@ -13,7 +13,9 @@ const SAMPLE_LENGTH = 3;
 
 app.use(bodyParser.json());
 app.use(sendSeekable);
-
+/**
+ * Respond with the form
+ */
 app.get('/', (req, res) => {
   const HTML = renderView({
     title: 'Wave Form',
@@ -70,7 +72,7 @@ app.get('/', (req, res) => {
   res.status(200).send(HTML);
 });
 /**
- * Generate a tone of the given frequency
+ * Respond with bytes for the given frequency and range
  */
 app.get('/:frequency', (req, res, next) => {
   const frequency = parseInt(req.params.frequency);
