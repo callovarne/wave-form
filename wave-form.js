@@ -19,6 +19,27 @@ app.use(sendSeekable);
 app.get('/', (req, res) => {
   const HTML = renderView({
     title: 'Wave Form',
+    styles: `
+      .masthead { min-height: 350px; }
+      .masthead .ui.header {
+        font-size: 4em;
+        margin-top: 1.5em;
+      }
+      .masthead h2 {
+        font-size: 1.7em;
+        font-weight: normal;
+      }
+      .ui.input input[name=frequency] {
+        text-align: right;
+        width: 3em;
+      }
+      code { display: block; }
+      audio { margin: 1em 0; }
+      
+      @media only screen and (min-width: 700px) {
+        .masthead { min-height: 600px; }
+      }
+    `,
     body: `
       <div class="ui inverted vertical masthead center aligned segment">
         <div class="ui text container">
@@ -65,6 +86,23 @@ app.get('/', (req, res) => {
           </div>
         </div>
       </div>
+    `,
+    scripts: `
+      document.addEventListener("DOMContentLoaded", function(event) {
+        var frequencyInput = document.querySelector('input[name=frequency]');
+        frequencyInput.addEventListener('input', _.debounce(handleFrequencyInput, 750));
+      });
+      
+      function handleFrequencyInput(e) {
+        var audioSrc = \`https://wt-patrick-craftycorvid_com-0.run.webtask.io/wave-form/\${e.target.value}\`;
+        var audioCode = \`&lt;audio src="\${audioSrc}"&gt;&lt;/audio&gt;\`;
+        var audioElement = document.querySelector('audio');
+        var codeElement = document.querySelector('code');
+        // Update code
+        codeElement.innerHTML = audioCode;
+        // Update audio src
+        audioElement.src = audioSrc;
+      }
     `
   });
 
@@ -100,25 +138,7 @@ function renderView(locals) {
       <meta charset="utf-8">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css" />
       <style>
-        .masthead { min-height: 350px; }
-        .masthead .ui.header {
-          font-size: 4em;
-          margin-top: 1.5em;
-        }
-        .masthead h2 {
-          font-size: 1.7em;
-          font-weight: normal;
-        }
-        .ui.input input[name=frequency] {
-          text-align: right;
-          width: 3em;
-        }
-        code { display: block; }
-        audio { margin: 1em 0; }
-        
-        @media only screen and (min-width: 700px) {
-          .masthead { min-height: 600px; }
-        }
+        ${locals.styles}
       </style>
       <title>${locals.title}</title>
     </head>
@@ -127,21 +147,7 @@ function renderView(locals) {
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function(event) {
-        var frequencyInput = document.querySelector('input[name=frequency]');
-        frequencyInput.addEventListener('input', _.debounce(handleFrequencyInput, 750));
-      });
-      
-      function handleFrequencyInput(e) {
-        var audioSrc = \`https://wt-patrick-craftycorvid_com-0.run.webtask.io/wave-form/\${e.target.value}\`;
-        var audioCode = \`&lt;audio src="\${audioSrc}"&gt;&lt;/audio&gt;\`;
-        var audioElement = document.querySelector('audio');
-        var codeElement = document.querySelector('code');
-        // Update code
-        codeElement.innerHTML = audioCode;
-        // Update audio src
-        audioElement.src = audioSrc;
-      }
+      ${locals.scripts}
     </script>
     </html>
   `;
